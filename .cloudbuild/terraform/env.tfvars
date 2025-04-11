@@ -1,4 +1,4 @@
-cicd_runner_project_id = "fakeworld-455516"
+cicd_runner_project_id = "gen-lang-client-0619302127"
 region                 = "europe-west3"
 host_connection_name   = "Undertaker1995"
 repository_name        = "Weltspiel"
