@@ -586,7 +586,8 @@ def setup_cicd(
         repository_exists=repository_exists,
     )
 
-    tf_dir = Path("deployment/terraform")
+    tf_dir = Path(".cloudbuild/terraform")
+
 
     # Copy CICD terraform files
     cicd_utils_path = Path(__file__).parent.parent.parent / "resources" / "setup_cicd"

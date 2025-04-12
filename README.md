@@ -125,3 +125,865 @@ This repository is for demonstrative purposes only and is not an officially supp
 ## Terms of Service
 
 The agent-starter-pack templating CLI and the templates in this starter pack leverage Google Cloud APIs. When you use this starter pack, you'll be deploying resources in your own Google Cloud project and will be responsible for those resources. Please review the [Google Cloud Service Terms](https://cloud.google.com/terms/service-terms) for details on the terms of service associated with these APIs.
+
+```
+agent-starter-pack
+├─ agents
+│  ├─ crewai_coding_crew
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ agent.py
+│  │  │  └─ crew
+│  │  │     ├─ crew.py
+│  │  │     └─ config
+│  │  │        ├─ agents.yaml
+│  │  │        └─ tasks.yaml
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     ├─ evaluating_langgraph_agent.ipynb
+│  │     └─ evaluating_crewai_agent.ipynb
+│  ├─ langgraph_base_react
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  └─ agent.py
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     └─ evaluating_langgraph_agent.ipynb
+│  ├─ live_api
+│  │  ├─ tests
+│  │  │  ├─ unit
+│  │  │  │  └─ test_server.py
+│  │  │  ├─ load_test
+│  │  │  │  └─ load_test.py
+│  │  │  └─ integration
+│  │  │     └─ test_server_e2e.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ vector_store.py
+│  │  │  ├─ agent.py
+│  │  │  ├─ templates.py
+│  │  │  └─ server.py
+│  │  └─ README.md
+│  ├─ agentic_rag
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ retrievers.py
+│  │  │  ├─ agent.py
+│  │  │  └─ templates.py
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     └─ evaluating_langgraph_agent.ipynb
+│  └─ adk_base
+│     ├─ tests
+│     │  └─ integration
+│     │     └─ test_agent.py
+│     ├─ template
+│     │  └─ .templateconfig.yaml
+│     ├─ app
+│     │  └─ agent.py
+│     └─ README.md
+├─ deployment
+│  └─ terraform
+│     └─ vars
+│        └─ env.tfvars
+├─ tests
+│  ├─ utils
+│  │  ├─ __init__.py
+│  │  └─ get_agents.py
+│  ├─ cli
+│  │  ├─ utils
+│  │  │  └─ test_cicd.py
+│  │  └─ commands
+│  │     ├─ test_create.py
+│  │     └─ test_setup_cicd.py
+│  ├─ cicd
+│  │  └─ test_e2e_deployment.py
+│  ├─ __init__.py
+│  ├─ integration
+│  │  ├─ test_templated_patterns.py
+│  │  └─ test_template_linting.py
+│  └─ test_frontend
+│     ├─ test_side_bar.py
+│     ├─ test_utils
+│     │  ├─ test_multimodal_utils.py
+│     │  ├─ test_stream_handler.py
+│     │  ├─ test_chat_utils.py
+│     │  ├─ test_message_editing.py
+│     │  └─ test_local_chat_history.py
+│     └─ test_streamlit_app.py
+├─ src
+│  ├─ utils
+│  │  ├─ generate_locks.py
+│  │  ├─ lock_utils.py
+│  │  └─ watch_and_rebuild.py
+│  ├─ cli
+│  │  ├─ utils
+│  │  │  ├─ template.py
+│  │  │  ├─ logging.py
+│  │  │  ├─ version.py
+│  │  │  ├─ __init__.py
+│  │  │  ├─ datastores.py
+│  │  │  ├─ gcp.py
+│  │  │  └─ cicd.py
+│  │  ├─ main.py
+│  │  └─ commands
+│  │     ├─ setup_cicd.py
+│  │     └─ create.py
+│  ├─ data_ingestion
+│  │  ├─ uv.lock
+│  │  ├─ data_ingestion_pipeline
+│  │  │  ├─ submit_pipeline.py
+│  │  │  ├─ components
+│  │  │  │  ├─ ingest_data.py
+│  │  │  │  └─ process_data.py
+│  │  │  └─ pipeline.py
+│  │  ├─ pyproject.toml
+│  │  └─ README.md
+│  ├─ resources
+│  │  ├─ containers
+│  │  │  ├─ e2e-tests
+│  │  │  │  └─ Dockerfile
+│  │  │  └─ data_processing
+│  │  │     └─ Dockerfile
+│  │  ├─ locks
+│  │  │  ├─ uv-agentic_rag-cloud_run.lock
+│  │  │  ├─ uv-langgraph_base_react-cloud_run.lock
+│  │  │  ├─ uv-adk_base-agent_engine.lock
+│  │  │  ├─ uv-crewai_coding_crew-cloud_run.lock
+│  │  │  ├─ uv-adk_base-cloud_run.lock
+│  │  │  ├─ uv-agentic_rag-agent_engine.lock
+│  │  │  ├─ uv-langgraph_base_react-agent_engine.lock
+│  │  │  ├─ uv-live_api-cloud_run.lock
+│  │  │  └─ uv-crewai_coding_crew-agent_engine.lock
+│  │  └─ setup_cicd
+│  │     ├─ providers.tf
+│  │     ├─ github.tf
+│  │     └─ cicd_variables.tf
+│  ├─ frontends
+│  │  ├─ live_api_react
+│  │  │  └─ frontend
+│  │  │     ├─ src
+│  │  │     │  ├─ utils
+│  │  │     │  │  ├─ worklets
+│  │  │     │  │  │  ├─ audio-processing.ts
+│  │  │     │  │  │  └─ vol-meter.ts
+│  │  │     │  │  ├─ audio-recorder.ts
+│  │  │     │  │  ├─ audio-streamer.ts
+│  │  │     │  │  ├─ store-logger.ts
+│  │  │     │  │  ├─ multimodal-live-client.ts
+│  │  │     │  │  ├─ utils.ts
+│  │  │     │  │  └─ audioworklet-registry.ts
+│  │  │     │  ├─ setupTests.ts
+│  │  │     │  ├─ contexts
+│  │  │     │  │  └─ LiveAPIContext.tsx
+│  │  │     │  ├─ index.css
+│  │  │     │  ├─ App.tsx
+│  │  │     │  ├─ multimodal-live-types.ts
+│  │  │     │  ├─ react-app-env.d.ts
+│  │  │     │  ├─ reportWebVitals.ts
+│  │  │     │  ├─ App.test.tsx
+│  │  │     │  ├─ index.tsx
+│  │  │     │  ├─ components
+│  │  │     │  │  ├─ side-panel
+│  │  │     │  │  │  ├─ side-panel.scss
+│  │  │     │  │  │  └─ SidePanel.tsx
+│  │  │     │  │  ├─ control-tray
+│  │  │     │  │  │  ├─ ControlTray.tsx
+│  │  │     │  │  │  └─ control-tray.scss
+│  │  │     │  │  ├─ audio-pulse
+│  │  │     │  │  │  ├─ AudioPulse.tsx
+│  │  │     │  │  │  └─ audio-pulse.scss
+│  │  │     │  │  └─ logger
+│  │  │     │  │     ├─ mock-logs.ts
+│  │  │     │  │     ├─ logger.scss
+│  │  │     │  │     └─ Logger.tsx
+│  │  │     │  ├─ App.scss
+│  │  │     │  └─ hooks
+│  │  │     │     ├─ use-webcam.ts
+│  │  │     │     ├─ use-live-api.ts
+│  │  │     │     ├─ use-screen-capture.ts
+│  │  │     │     └─ use-media-stream-mux.ts
+│  │  │     ├─ package.json
+│  │  │     ├─ public
+│  │  │     │  ├─ favicon.ico
+│  │  │     │  ├─ robots.txt
+│  │  │     │  └─ index.html
+│  │  │     ├─ tsconfig.json
+│  │  │     └─ package-lock.json
+│  │  ├─ streamlit
+│  │  │  └─ frontend
+│  │  │     ├─ utils
+│  │  │     │  ├─ message_editing.py
+│  │  │     │  ├─ chat_utils.py
+│  │  │     │  ├─ multimodal_utils.py
+│  │  │     │  ├─ title_summary.py
+│  │  │     │  ├─ local_chat_history.py
+│  │  │     │  └─ stream_handler.py
+│  │  │     ├─ style
+│  │  │     │  └─ app_markdown.py
+│  │  │     ├─ side_bar.py
+│  │  │     └─ streamlit_app.py
+│  │  └─ streamlit_adk
+│  │     └─ frontend
+│  │        ├─ utils
+│  │        │  ├─ message_editing.py
+│  │        │  ├─ chat_utils.py
+│  │        │  ├─ multimodal_utils.py
+│  │        │  ├─ title_summary.py
+│  │        │  ├─ local_chat_history.py
+│  │        │  └─ stream_handler.py
+│  │        ├─ style
+│  │        │  └─ app_markdown.py
+│  │        ├─ side_bar.py
+│  │        └─ streamlit_app.py
+│  └─ base_template
+│     ├─ deployment
+│     │  ├─ terraform
+│     │  │  ├─ log_sinks.tf
+│     │  │  ├─ variables.tf
+│     │  │  ├─ providers.tf
+│     │  │  ├─ build_triggers.tf
+│     │  │  ├─ iam.tf
+│     │  │  ├─ dev
+│     │  │  │  ├─ log_sinks.tf
+│     │  │  │  ├─ variables.tf
+│     │  │  │  ├─ providers.tf
+│     │  │  │  ├─ iam.tf
+│     │  │  │  ├─ storage.tf
+│     │  │  │  ├─ vars
+│     │  │  │  │  └─ env.tfvars
+│     │  │  │  └─ apis.tf
+│     │  │  ├─ storage.tf
+│     │  │  ├─ vars
+│     │  │  │  └─ env.tfvars
+│     │  │  ├─ service_accounts.tf
+│     │  │  ├─ locals.tf
+│     │  │  └─ apis.tf
+│     │  ├─ cd
+│     │  │  ├─ deploy-to-prod.yaml
+│     │  │  └─ staging.yaml
+│     │  ├─ ci
+│     │  │  └─ pr_checks.yaml
+│     │  └─ README.md
+│     ├─ tests
+│     │  └─ unit
+│     │     └─ test_dummy.py
+│     ├─ Makefile
+│     ├─ app
+│     │  └─ utils
+│     │     ├─ typing.py
+│     │     └─ tracing.py
+│     ├─ pyproject.toml
+│     └─ README.md
+├─ uv.lock
+├─ Makefile
+├─ LICENSE
+├─ CONTRIBUTING.md
+├─ CODE_OF_CONDUCT.md
+├─ docs
+│  ├─ images
+│  │  ├─ ags_banner.png
+│  │  ├─ ags_high_level_architecture.png
+│  │  └─ adk_logo.png
+│  ├─ installation.md
+│  ├─ cli
+│  │  ├─ setup_cicd.md
+│  │  ├─ create.md
+│  │  └─ README.md
+│  ├─ data-ingestion.md
+│  ├─ troubleshooting.md
+│  ├─ observability.md
+│  ├─ why_starter_pack.md
+│  ├─ deployment.md
+│  └─ README.md
+├─ pyproject.toml
+└─ README.md
+
+```
+```
+agent-starter-pack
+├─ agents
+│  ├─ crewai_coding_crew
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ agent.py
+│  │  │  └─ crew
+│  │  │     ├─ crew.py
+│  │  │     └─ config
+│  │  │        ├─ agents.yaml
+│  │  │        └─ tasks.yaml
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     ├─ evaluating_langgraph_agent.ipynb
+│  │     └─ evaluating_crewai_agent.ipynb
+│  ├─ langgraph_base_react
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  └─ agent.py
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     └─ evaluating_langgraph_agent.ipynb
+│  ├─ live_api
+│  │  ├─ tests
+│  │  │  ├─ unit
+│  │  │  │  └─ test_server.py
+│  │  │  ├─ load_test
+│  │  │  │  └─ load_test.py
+│  │  │  └─ integration
+│  │  │     └─ test_server_e2e.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ vector_store.py
+│  │  │  ├─ agent.py
+│  │  │  ├─ templates.py
+│  │  │  └─ server.py
+│  │  └─ README.md
+│  ├─ agentic_rag
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ retrievers.py
+│  │  │  ├─ agent.py
+│  │  │  └─ templates.py
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     └─ evaluating_langgraph_agent.ipynb
+│  └─ adk_base
+│     ├─ tests
+│     │  └─ integration
+│     │     └─ test_agent.py
+│     ├─ template
+│     │  └─ .templateconfig.yaml
+│     ├─ app
+│     │  └─ agent.py
+│     └─ README.md
+├─ deployment
+│  └─ terraform
+│     └─ vars
+│        └─ env.tfvars
+├─ tests
+│  ├─ utils
+│  │  ├─ __init__.py
+│  │  └─ get_agents.py
+│  ├─ cli
+│  │  ├─ utils
+│  │  │  └─ test_cicd.py
+│  │  └─ commands
+│  │     ├─ test_create.py
+│  │     └─ test_setup_cicd.py
+│  ├─ cicd
+│  │  └─ test_e2e_deployment.py
+│  ├─ __init__.py
+│  ├─ integration
+│  │  ├─ test_templated_patterns.py
+│  │  └─ test_template_linting.py
+│  └─ test_frontend
+│     ├─ test_side_bar.py
+│     ├─ test_utils
+│     │  ├─ test_multimodal_utils.py
+│     │  ├─ test_stream_handler.py
+│     │  ├─ test_chat_utils.py
+│     │  ├─ test_message_editing.py
+│     │  └─ test_local_chat_history.py
+│     └─ test_streamlit_app.py
+├─ src
+│  ├─ utils
+│  │  ├─ generate_locks.py
+│  │  ├─ lock_utils.py
+│  │  └─ watch_and_rebuild.py
+│  ├─ cli
+│  │  ├─ utils
+│  │  │  ├─ template.py
+│  │  │  ├─ logging.py
+│  │  │  ├─ version.py
+│  │  │  ├─ __init__.py
+│  │  │  ├─ datastores.py
+│  │  │  ├─ gcp.py
+│  │  │  └─ cicd.py
+│  │  ├─ main.py
+│  │  └─ commands
+│  │     ├─ setup_cicd.py
+│  │     └─ create.py
+│  ├─ data_ingestion
+│  │  ├─ uv.lock
+│  │  ├─ data_ingestion_pipeline
+│  │  │  ├─ submit_pipeline.py
+│  │  │  ├─ components
+│  │  │  │  ├─ ingest_data.py
+│  │  │  │  └─ process_data.py
+│  │  │  └─ pipeline.py
+│  │  ├─ pyproject.toml
+│  │  └─ README.md
+│  ├─ resources
+│  │  ├─ containers
+│  │  │  ├─ e2e-tests
+│  │  │  │  └─ Dockerfile
+│  │  │  └─ data_processing
+│  │  │     └─ Dockerfile
+│  │  ├─ locks
+│  │  │  ├─ uv-agentic_rag-cloud_run.lock
+│  │  │  ├─ uv-langgraph_base_react-cloud_run.lock
+│  │  │  ├─ uv-adk_base-agent_engine.lock
+│  │  │  ├─ uv-crewai_coding_crew-cloud_run.lock
+│  │  │  ├─ uv-adk_base-cloud_run.lock
+│  │  │  ├─ uv-agentic_rag-agent_engine.lock
+│  │  │  ├─ uv-langgraph_base_react-agent_engine.lock
+│  │  │  ├─ uv-live_api-cloud_run.lock
+│  │  │  └─ uv-crewai_coding_crew-agent_engine.lock
+│  │  └─ setup_cicd
+│  │     ├─ providers.tf
+│  │     ├─ github.tf
+│  │     └─ cicd_variables.tf
+│  ├─ frontends
+│  │  ├─ live_api_react
+│  │  │  └─ frontend
+│  │  │     ├─ src
+│  │  │     │  ├─ utils
+│  │  │     │  │  ├─ worklets
+│  │  │     │  │  │  ├─ audio-processing.ts
+│  │  │     │  │  │  └─ vol-meter.ts
+│  │  │     │  │  ├─ audio-recorder.ts
+│  │  │     │  │  ├─ audio-streamer.ts
+│  │  │     │  │  ├─ store-logger.ts
+│  │  │     │  │  ├─ multimodal-live-client.ts
+│  │  │     │  │  ├─ utils.ts
+│  │  │     │  │  └─ audioworklet-registry.ts
+│  │  │     │  ├─ setupTests.ts
+│  │  │     │  ├─ contexts
+│  │  │     │  │  └─ LiveAPIContext.tsx
+│  │  │     │  ├─ index.css
+│  │  │     │  ├─ App.tsx
+│  │  │     │  ├─ multimodal-live-types.ts
+│  │  │     │  ├─ react-app-env.d.ts
+│  │  │     │  ├─ reportWebVitals.ts
+│  │  │     │  ├─ App.test.tsx
+│  │  │     │  ├─ index.tsx
+│  │  │     │  ├─ components
+│  │  │     │  │  ├─ side-panel
+│  │  │     │  │  │  ├─ side-panel.scss
+│  │  │     │  │  │  └─ SidePanel.tsx
+│  │  │     │  │  ├─ control-tray
+│  │  │     │  │  │  ├─ ControlTray.tsx
+│  │  │     │  │  │  └─ control-tray.scss
+│  │  │     │  │  ├─ audio-pulse
+│  │  │     │  │  │  ├─ AudioPulse.tsx
+│  │  │     │  │  │  └─ audio-pulse.scss
+│  │  │     │  │  └─ logger
+│  │  │     │  │     ├─ mock-logs.ts
+│  │  │     │  │     ├─ logger.scss
+│  │  │     │  │     └─ Logger.tsx
+│  │  │     │  ├─ App.scss
+│  │  │     │  └─ hooks
+│  │  │     │     ├─ use-webcam.ts
+│  │  │     │     ├─ use-live-api.ts
+│  │  │     │     ├─ use-screen-capture.ts
+│  │  │     │     └─ use-media-stream-mux.ts
+│  │  │     ├─ package.json
+│  │  │     ├─ public
+│  │  │     │  ├─ favicon.ico
+│  │  │     │  ├─ robots.txt
+│  │  │     │  └─ index.html
+│  │  │     ├─ tsconfig.json
+│  │  │     └─ package-lock.json
+│  │  ├─ streamlit
+│  │  │  └─ frontend
+│  │  │     ├─ utils
+│  │  │     │  ├─ message_editing.py
+│  │  │     │  ├─ chat_utils.py
+│  │  │     │  ├─ multimodal_utils.py
+│  │  │     │  ├─ title_summary.py
+│  │  │     │  ├─ local_chat_history.py
+│  │  │     │  └─ stream_handler.py
+│  │  │     ├─ style
+│  │  │     │  └─ app_markdown.py
+│  │  │     ├─ side_bar.py
+│  │  │     └─ streamlit_app.py
+│  │  └─ streamlit_adk
+│  │     └─ frontend
+│  │        ├─ utils
+│  │        │  ├─ message_editing.py
+│  │        │  ├─ chat_utils.py
+│  │        │  ├─ multimodal_utils.py
+│  │        │  ├─ title_summary.py
+│  │        │  ├─ local_chat_history.py
+│  │        │  └─ stream_handler.py
+│  │        ├─ style
+│  │        │  └─ app_markdown.py
+│  │        ├─ side_bar.py
+│  │        └─ streamlit_app.py
+│  └─ base_template
+│     ├─ deployment
+│     │  ├─ terraform
+│     │  │  ├─ log_sinks.tf
+│     │  │  ├─ variables.tf
+│     │  │  ├─ providers.tf
+│     │  │  ├─ build_triggers.tf
+│     │  │  ├─ iam.tf
+│     │  │  ├─ dev
+│     │  │  │  ├─ log_sinks.tf
+│     │  │  │  ├─ variables.tf
+│     │  │  │  ├─ providers.tf
+│     │  │  │  ├─ iam.tf
+│     │  │  │  ├─ storage.tf
+│     │  │  │  ├─ vars
+│     │  │  │  │  └─ env.tfvars
+│     │  │  │  └─ apis.tf
+│     │  │  ├─ storage.tf
+│     │  │  ├─ vars
+│     │  │  │  └─ env.tfvars
+│     │  │  ├─ service_accounts.tf
+│     │  │  ├─ locals.tf
+│     │  │  └─ apis.tf
+│     │  ├─ cd
+│     │  │  ├─ deploy-to-prod.yaml
+│     │  │  └─ staging.yaml
+│     │  ├─ ci
+│     │  │  └─ pr_checks.yaml
+│     │  └─ README.md
+│     ├─ tests
+│     │  └─ unit
+│     │     └─ test_dummy.py
+│     ├─ Makefile
+│     ├─ app
+│     │  └─ utils
+│     │     ├─ typing.py
+│     │     └─ tracing.py
+│     ├─ pyproject.toml
+│     └─ README.md
+├─ uv.lock
+├─ Makefile
+├─ LICENSE
+├─ CONTRIBUTING.md
+├─ CODE_OF_CONDUCT.md
+├─ docs
+│  ├─ images
+│  │  ├─ ags_banner.png
+│  │  ├─ ags_high_level_architecture.png
+│  │  └─ adk_logo.png
+│  ├─ installation.md
+│  ├─ cli
+│  │  ├─ setup_cicd.md
+│  │  ├─ create.md
+│  │  └─ README.md
+│  ├─ data-ingestion.md
+│  ├─ troubleshooting.md
+│  ├─ observability.md
+│  ├─ why_starter_pack.md
+│  ├─ deployment.md
+│  └─ README.md
+├─ pyproject.toml
+└─ README.md
+
+```
+```
+agent-starter-pack
+├─ agents
+│  ├─ crewai_coding_crew
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ agent.py
+│  │  │  └─ crew
+│  │  │     ├─ crew.py
+│  │  │     └─ config
+│  │  │        ├─ agents.yaml
+│  │  │        └─ tasks.yaml
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     ├─ evaluating_langgraph_agent.ipynb
+│  │     └─ evaluating_crewai_agent.ipynb
+│  ├─ langgraph_base_react
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  └─ agent.py
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     └─ evaluating_langgraph_agent.ipynb
+│  ├─ live_api
+│  │  ├─ tests
+│  │  │  ├─ unit
+│  │  │  │  └─ test_server.py
+│  │  │  ├─ load_test
+│  │  │  │  └─ load_test.py
+│  │  │  └─ integration
+│  │  │     └─ test_server_e2e.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ vector_store.py
+│  │  │  ├─ agent.py
+│  │  │  ├─ templates.py
+│  │  │  └─ server.py
+│  │  └─ README.md
+│  ├─ agentic_rag
+│  │  ├─ tests
+│  │  │  └─ integration
+│  │  │     └─ test_agent.py
+│  │  ├─ template
+│  │  │  └─ .templateconfig.yaml
+│  │  ├─ app
+│  │  │  ├─ retrievers.py
+│  │  │  ├─ agent.py
+│  │  │  └─ templates.py
+│  │  ├─ README.md
+│  │  └─ notebooks
+│  │     └─ evaluating_langgraph_agent.ipynb
+│  └─ adk_base
+│     ├─ tests
+│     │  └─ integration
+│     │     └─ test_agent.py
+│     ├─ template
+│     │  └─ .templateconfig.yaml
+│     ├─ app
+│     │  └─ agent.py
+│     └─ README.md
+├─ deployment
+│  └─ terraform
+│     └─ vars
+│        └─ env.tfvars
+├─ tests
+│  ├─ utils
+│  │  ├─ __init__.py
+│  │  └─ get_agents.py
+│  ├─ cli
+│  │  ├─ utils
+│  │  │  └─ test_cicd.py
+│  │  └─ commands
+│  │     ├─ test_create.py
+│  │     └─ test_setup_cicd.py
+│  ├─ cicd
+│  │  └─ test_e2e_deployment.py
+│  ├─ __init__.py
+│  ├─ integration
+│  │  ├─ test_templated_patterns.py
+│  │  └─ test_template_linting.py
+│  └─ test_frontend
+│     ├─ test_side_bar.py
+│     ├─ test_utils
+│     │  ├─ test_multimodal_utils.py
+│     │  ├─ test_stream_handler.py
+│     │  ├─ test_chat_utils.py
+│     │  ├─ test_message_editing.py
+│     │  └─ test_local_chat_history.py
+│     └─ test_streamlit_app.py
+├─ src
+│  ├─ utils
+│  │  ├─ generate_locks.py
+│  │  ├─ lock_utils.py
+│  │  └─ watch_and_rebuild.py
+│  ├─ cli
+│  │  ├─ utils
+│  │  │  ├─ template.py
+│  │  │  ├─ logging.py
+│  │  │  ├─ version.py
+│  │  │  ├─ __init__.py
+│  │  │  ├─ datastores.py
+│  │  │  ├─ gcp.py
+│  │  │  └─ cicd.py
+│  │  ├─ main.py
+│  │  └─ commands
+│  │     ├─ setup_cicd.py
+│  │     └─ create.py
+│  ├─ data_ingestion
+│  │  ├─ uv.lock
+│  │  ├─ data_ingestion_pipeline
+│  │  │  ├─ submit_pipeline.py
+│  │  │  ├─ components
+│  │  │  │  ├─ ingest_data.py
+│  │  │  │  └─ process_data.py
+│  │  │  └─ pipeline.py
+│  │  ├─ pyproject.toml
+│  │  └─ README.md
+│  ├─ resources
+│  │  ├─ containers
+│  │  │  ├─ e2e-tests
+│  │  │  │  └─ Dockerfile
+│  │  │  └─ data_processing
+│  │  │     └─ Dockerfile
+│  │  ├─ locks
+│  │  │  ├─ uv-agentic_rag-cloud_run.lock
+│  │  │  ├─ uv-langgraph_base_react-cloud_run.lock
+│  │  │  ├─ uv-adk_base-agent_engine.lock
+│  │  │  ├─ uv-crewai_coding_crew-cloud_run.lock
+│  │  │  ├─ uv-adk_base-cloud_run.lock
+│  │  │  ├─ uv-agentic_rag-agent_engine.lock
+│  │  │  ├─ uv-langgraph_base_react-agent_engine.lock
+│  │  │  ├─ uv-live_api-cloud_run.lock
+│  │  │  └─ uv-crewai_coding_crew-agent_engine.lock
+│  │  └─ setup_cicd
+│  │     ├─ providers.tf
+│  │     ├─ github.tf
+│  │     └─ cicd_variables.tf
+│  ├─ frontends
+│  │  ├─ live_api_react
+│  │  │  └─ frontend
+│  │  │     ├─ src
+│  │  │     │  ├─ utils
+│  │  │     │  │  ├─ worklets
+│  │  │     │  │  │  ├─ audio-processing.ts
+│  │  │     │  │  │  └─ vol-meter.ts
+│  │  │     │  │  ├─ audio-recorder.ts
+│  │  │     │  │  ├─ audio-streamer.ts
+│  │  │     │  │  ├─ store-logger.ts
+│  │  │     │  │  ├─ multimodal-live-client.ts
+│  │  │     │  │  ├─ utils.ts
+│  │  │     │  │  └─ audioworklet-registry.ts
+│  │  │     │  ├─ setupTests.ts
+│  │  │     │  ├─ contexts
+│  │  │     │  │  └─ LiveAPIContext.tsx
+│  │  │     │  ├─ index.css
+│  │  │     │  ├─ App.tsx
+│  │  │     │  ├─ multimodal-live-types.ts
+│  │  │     │  ├─ react-app-env.d.ts
+│  │  │     │  ├─ reportWebVitals.ts
+│  │  │     │  ├─ App.test.tsx
+│  │  │     │  ├─ index.tsx
+│  │  │     │  ├─ components
+│  │  │     │  │  ├─ side-panel
+│  │  │     │  │  │  ├─ side-panel.scss
+│  │  │     │  │  │  └─ SidePanel.tsx
+│  │  │     │  │  ├─ control-tray
+│  │  │     │  │  │  ├─ ControlTray.tsx
+│  │  │     │  │  │  └─ control-tray.scss
+│  │  │     │  │  ├─ audio-pulse
+│  │  │     │  │  │  ├─ AudioPulse.tsx
+│  │  │     │  │  │  └─ audio-pulse.scss
+│  │  │     │  │  └─ logger
+│  │  │     │  │     ├─ mock-logs.ts
+│  │  │     │  │     ├─ logger.scss
+│  │  │     │  │     └─ Logger.tsx
+│  │  │     │  ├─ App.scss
+│  │  │     │  └─ hooks
+│  │  │     │     ├─ use-webcam.ts
+│  │  │     │     ├─ use-live-api.ts
+│  │  │     │     ├─ use-screen-capture.ts
+│  │  │     │     └─ use-media-stream-mux.ts
+│  │  │     ├─ package.json
+│  │  │     ├─ public
+│  │  │     │  ├─ favicon.ico
+│  │  │     │  ├─ robots.txt
+│  │  │     │  └─ index.html
+│  │  │     ├─ tsconfig.json
+│  │  │     └─ package-lock.json
+│  │  ├─ streamlit
+│  │  │  └─ frontend
+│  │  │     ├─ utils
+│  │  │     │  ├─ message_editing.py
+│  │  │     │  ├─ chat_utils.py
+│  │  │     │  ├─ multimodal_utils.py
+│  │  │     │  ├─ title_summary.py
+│  │  │     │  ├─ local_chat_history.py
+│  │  │     │  └─ stream_handler.py
+│  │  │     ├─ style
+│  │  │     │  └─ app_markdown.py
+│  │  │     ├─ side_bar.py
+│  │  │     └─ streamlit_app.py
+│  │  └─ streamlit_adk
+│  │     └─ frontend
+│  │        ├─ utils
+│  │        │  ├─ message_editing.py
+│  │        │  ├─ chat_utils.py
+│  │        │  ├─ multimodal_utils.py
+│  │        │  ├─ title_summary.py
+│  │        │  ├─ local_chat_history.py
+│  │        │  └─ stream_handler.py
+│  │        ├─ style
+│  │        │  └─ app_markdown.py
+│  │        ├─ side_bar.py
+│  │        └─ streamlit_app.py
+│  └─ base_template
+│     ├─ deployment
+│     │  ├─ terraform
+│     │  │  ├─ log_sinks.tf
+│     │  │  ├─ variables.tf
+│     │  │  ├─ providers.tf
+│     │  │  ├─ build_triggers.tf
+│     │  │  ├─ iam.tf
+│     │  │  ├─ dev
+│     │  │  │  ├─ log_sinks.tf
+│     │  │  │  ├─ variables.tf
+│     │  │  │  ├─ providers.tf
+│     │  │  │  ├─ iam.tf
+│     │  │  │  ├─ storage.tf
+│     │  │  │  ├─ vars
+│     │  │  │  │  └─ env.tfvars
+│     │  │  │  └─ apis.tf
+│     │  │  ├─ storage.tf
+│     │  │  ├─ vars
+│     │  │  │  └─ env.tfvars
+│     │  │  ├─ service_accounts.tf
+│     │  │  ├─ locals.tf
+│     │  │  └─ apis.tf
+│     │  ├─ cd
+│     │  │  ├─ deploy-to-prod.yaml
+│     │  │  └─ staging.yaml
+│     │  ├─ ci
+│     │  │  └─ pr_checks.yaml
+│     │  └─ README.md
+│     ├─ tests
+│     │  └─ unit
+│     │     └─ test_dummy.py
+│     ├─ Makefile
+│     ├─ app
+│     │  └─ utils
+│     │     ├─ typing.py
+│     │     └─ tracing.py
+│     ├─ pyproject.toml
+│     └─ README.md
+├─ uv.lock
+├─ Makefile
+├─ LICENSE
+├─ CONTRIBUTING.md
+├─ CODE_OF_CONDUCT.md
+├─ docs
+│  ├─ images
+│  │  ├─ ags_banner.png
+│  │  ├─ ags_high_level_architecture.png
+│  │  └─ adk_logo.png
+│  ├─ installation.md
+│  ├─ cli
+│  │  ├─ setup_cicd.md
+│  │  ├─ create.md
+│  │  └─ README.md
+│  ├─ data-ingestion.md
+│  ├─ troubleshooting.md
+│  ├─ observability.md
+│  ├─ why_starter_pack.md
+│  ├─ deployment.md
+│  └─ README.md
+├─ pyproject.toml
+└─ README.md
+
+```
